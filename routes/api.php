@@ -19,7 +19,7 @@ use App\Http\Controllers\Api\TransactionController;
 |
 */
 
-Route::middleware('auth:api')->get('/api/dashboard', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/api/dashboard', function (Request $request) {
     return $request->user();
 });
 

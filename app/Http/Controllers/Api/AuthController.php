@@ -33,8 +33,9 @@ class AuthController extends Controller
         if(!$token = auth()->attempt($validator->validate())){
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+        $token = $request->user()->createToken('token');
 
-        return $this->createNewToken($token);
+        return $this->userdata_with_token($token->plainTextToken);
 
     }
 
@@ -49,6 +50,7 @@ class AuthController extends Controller
             'city' =>'required|string|max:20',
             'gender' =>'required|string|max:7',
             'age' =>'required|numeric|digits:2',
+            'deposite' =>'required|numeric',
             
         ]);
         $account_number="4";
@@ -70,15 +72,10 @@ class AuthController extends Controller
         ]
         ));
 
-        $token = Auth::guard('api')->login($user);
         return response()->json([
             'status' => 'success',
             'message' => 'User created successfully',
             'user' => $user,
-            'authorisation' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
         ],201);
     }
 
@@ -91,18 +88,12 @@ class AuthController extends Controller
         ]);
     }
 
-    public function refresh()
-    {
-        return $this->createNewToken(auth()->refresh());
-    }
 
 
-    public function createNewToken($token)
+    public function userdata_with_token($token)
     {
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => auth()->user()
         ]);
     }
