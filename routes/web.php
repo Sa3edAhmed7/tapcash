@@ -47,7 +47,8 @@ Route::middleware('auth:web')->group(function () {
     Route::resource('smartcart', SmartCartController::class);
     Route::resource('smartwallet', SmartWalletController::class);
     Route::resource('purchases', purchasesController::class);
-    
+    Route::post('/smartcart/increase', [SmartCartController::class,'inc_money'])->name('smartcart.inc_money');
+    Route::post('/smartcart/decrease', [SmartCartController::class,'dec_money'])->name('smartcart.dec_money');
 
 });
 

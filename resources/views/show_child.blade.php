@@ -71,7 +71,7 @@
 
 <br>
 
-
+@if(count($child_transactions)>0)
         <table class="table w-50 mx-auto">
             <h5 class="text-center" style="color:#51B56D;">Last Transaction</h5>
             <thead>
@@ -96,6 +96,10 @@
                 @endforeach
             </tbody>
         </table>
+        @else
+
+<h3 class="text-center" style="color: black;">your child haven't transactions</h3>
+@endif
     </div>
     
 

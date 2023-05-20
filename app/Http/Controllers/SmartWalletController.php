@@ -21,6 +21,11 @@ class SmartWalletController extends Controller
         foreach($children_id as $child_id){
             array_push($children_account,child::where('id', $child_id->child_id)->first());
           }
+            
+        //   $data['account_number']=select('account_number');
+        //   $child_id=Child::findorfail(auth()->id);
+        //   $child=Child::where('account_number',$child_id->account_number)->get();
+
         $transactions = history_transactions::where('account_no',$user->account_number)->get();
         return view('smartwallet',compact('user','transactions','children_account'));
     }
@@ -38,7 +43,7 @@ class SmartWalletController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       
     }
 
     /**

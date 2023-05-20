@@ -2,9 +2,9 @@
 
 namespace App\Models;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SmartCart extends Model
@@ -16,6 +16,7 @@ class SmartCart extends Model
         'Cart_number',
         'deposite',
         'purchases_limit',
+        'expire_date',
         'money_limit',
     ];
 

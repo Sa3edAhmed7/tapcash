@@ -51,7 +51,7 @@
           @auth
           <a type="button" class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#applyLoan">Transfer To <span style="font-size: 14px;" class="ms-2 fas fa-arrow-right"></span></a>
           @if(session('success')!= null)
-          <div class="alert alert-success">{{session('success')}}</div>
+          <div class="alert alert-success"><h3><strong>{{session('success')}}</strong></h3></div>
           <br>
           @endif
           @else

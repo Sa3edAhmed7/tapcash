@@ -30,48 +30,64 @@ class HistoryTransactionsController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    { 
+    {
 
-         if(Auth::user()->type==1){
-             $reciever=$request->receive_account;
-             $user=User::where('account_number',$reciever)->first();
-             if($user){
-                $user->update(['deposite'=>$request->process_type]);
+        if (Auth::user()->type == 1) {
+            $reciever = $request->receive_account;
+            $user = User::where('account_number', $reciever)->first();
+
+            if ($user) {
+                $user_balance = $user->deposite;
+                $inc_balance = $user_balance + $request->process_type;
+                $user->update(['deposite' => $inc_balance]);
+
+                $money = new history_transactions();
+                $money->account_no = Auth::user()->account_number;
+                $money->process_type = 'admin '.$request->process_name . ' with value ' . $request->process_type;
+                $money->receive_account = $request->receive_account;
+                $money->save();
+
+                
                 return redirect()->back()->with(session()->flash('success', ' sended Successfully'));
-             }else{
+            } else {
                 return redirect()->back()->with(session()->flash('success', 'user not found'));
-             }
-         }else{
-       $money = new history_transactions();
-       $money->account_no = Auth::user()->account_number;
-       $money->process_type = $request->process_name.' with value '.$request->process_type;
-       $money->receive_account = $request->receive_account;  
-       $sender_user =User::findorfail(Auth::user()->id);
-       $reciever_user =User::where('account_number',$request->receive_account)->first();
-       $child_account = child::where('account_number',$request->receive_account)->first();
-       if($request->process_type <= Auth::user()->deposite){
-        if($reciever_user){
-              $inc_amount=$reciever_user->deposite + $request->process_type;
-              $dec_amount=$sender_user->deposite - $request->process_type;
-              $sender_user->update(['deposite'=>$dec_amount]);
-              $reciever_user->update(['deposite'=>$inc_amount]);
-              $money->save();
-              return redirect()->back()->with(session()->flash('success', ' sended Successfully'));
-        }elseif($child_account){
-            $inc_amount= $child_account->deposite + $request->process_type;
-            $dec_amount= $sender_user->deposite - $request->process_type;
-            $sender_user->update(['deposite'=>$dec_amount]);
-            $child_account->update(['deposite'=>$inc_amount]);
-            $money->save();
-            return redirect()->back()->with(session()->flash('success', ' sended Successfully'));
-        }else{
-            redirect()->back()->with(session()->flash('success', 'field sended'));
+            }
+        } else {
+            $money = new history_transactions();
+            $money->account_no = Auth::user()->account_number;
+            $money->process_type = $request->process_name . ' with value ' . $request->process_type;
+            $money->receive_account = $request->receive_account;
+            $sender_user = User::findorfail(Auth::user()->id);
+            $reciever_user = User::where('account_number', $request->receive_account)->first();
+            $child_account = child::where('account_number', $request->receive_account)->first();
+            // print($request->process_type);
+            // print($sender_user->deposite);
+            // $x=($request->process_type < $sender_user->deposite)? "true" : "false" ;
+            // print($x);
+            if ($request->process_type < $sender_user->deposite) {
+                // print($request->receive_account);
+                // print("saeid");
+                if ($reciever_user) {
+                    // print("omar");
+                    $inc_amount = $reciever_user->deposite + $request->process_type;
+                    $dec_amount = $sender_user->deposite - $request->process_type;
+                    $sender_user->update(['deposite' => $dec_amount]);
+                    $reciever_user->update(['deposite' => $inc_amount]);
+                    $money->save();
+                    return redirect()->back()->with(session()->flash('success', ' sended Successfully'));
+                } elseif ($child_account) {
+                    $inc_amount = $child_account->deposite + $request->process_type;
+                    $dec_amount = $sender_user->deposite - $request->process_type;
+                    $sender_user->update(['deposite' => $dec_amount]);
+                    $child_account->update(['deposite' => $inc_amount]);
+                    $money->save();
+                    return redirect()->back()->with(session()->flash('success', ' sended Successfully'));
+                } else {
+                    redirect()->back()->with(session()->flash('success', 'Doesnot exist this account'));
+                }
+            }
+            redirect()->back()->with(session()->flash('success', 'havenot enough money'));
         }
-        
-       }
-       redirect()->back()->with(session()->flash('success', 'field sended'));
-      
-    }
     }
 
     /**

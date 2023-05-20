@@ -23,8 +23,8 @@
     }
 
     .bg-c-lite-green {
-  
-        background:#51B56D !important;
+
+        background: #51B56D !important;
     }
 
     .card {
@@ -49,6 +49,47 @@
         border-radius: .25rem;
     }
 </style>
+
+
+<div class="modal applyModal fade" id="sendmoney" tabindex="-1" aria-labelledby="applyLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+                <h4 class="modal-title" id="exampleModalLabel">Tranfer</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{route('money_transaction.store')}}">
+                    @csrf
+                    <div class="col-lg-12 mb-4 pb-2">
+                        <div class="form-group">
+                            <!-- <p id="receive_account">omar</p> -->
+                            <label for="" class="form-label">Your child Account</label>
+                            <input type="text" class="form-control shadow-none" name="receive_account" id="receive_account">
+                            <br>
+                            <!-- <p style="margin-left: 17px; color: black;"  name="accountnumber" id="receive_account"></p> -->
+
+
+                            <input type="hidden" name="process_name" value="transfer to my child">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-4 pb-2">
+                        <div class="form-group">
+                            <label for="process_type" class="form-label">Amount</label>
+                            <input type="number" class="form-control shadow-none" name="process_type" id="process_type" placeholder="ex: 25000">
+                            <input type="hidden" name="process_name" value="transfer">
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <button type="submit" class="btn btn-primary w-100">Transfer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <br>
 <div class="card bg-c-lite-green update-card w-25 mx-auto">
     <div class="card-block">
@@ -71,10 +112,11 @@
 
 <br>
 
-@if(count($transactions)>0)
+
 <div class="row">
 
     <div class="column">
+        @if(count($transactions)>0)
         <table class="table">
             <h5 class="text-center" style="color:#51B56D;">Last Transaction</h5>
             <thead>
@@ -99,22 +141,28 @@
                 @endforeach
             </tbody>
         </table>
+        @else
+
+        <h3 class="text-center" style="color: black;">no transactions</h3>
+        @endif
     </div>
 
-    @if($user->type==2)
+
     <div class="column">
+        @if($user->type==2 && count($children_account)>0)
 
         <table class="table ">
             <h5 class="text-center" style="color:#51B56D;">your children</h5>
             <thead>
                 <tr>
                     <th style="color:black;" scope="col">#</th>
-                    <th style="color:black;" scope="col">child name</th>
-                    <th style="color:black;" scope="col">child email</th>
-                    <th style="color:black;" scope="col">child account</th>
+                    <th style="color:black;" scope="col">child_name</th>
+                    <th style="color:black;" scope="col">child_account</th>
+                    <th style="color:black;" scope="col">send_money</th>
+                    <th style="color:black;" scope="col">child_detail</th>
                     <th style="color:black;" scope="col">time at</th>
-                    <th style="color:black;" scope="col">child detail</th>
-                    
+
+
                 </tr>
             </thead>
             <tbody>
@@ -122,25 +170,42 @@
                 <tr>
                     <th style="color:black;" scope="row">{{ $loop->iteration }}</th>
                     <td style="color:black;">{{$child_account->name}}</td>
-                    <td style="color:black;">{{$child_account->email}}</td>
                     <td style="color:black;">{{$child_account->account_number}}</td>
-                    <td style="color:black;">{{$child_account->created_at}}</td>
-                    <td><a class="btn btn-info me-3" style="width: 50px; padding: 3px;" href="{{ route('child.show', $child_account)}}">details</a></td>
+                    <td>
+                        <a type="button" style="width: 60px; padding: 3px;"onclick="getText({{$child_account->account_number}})" value="{{$child_account->account_number}}" class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#sendmoney">Send</a>
+                    </td>
 
+
+                    <td>
+                        <a type="button" style="width: 70px; padding: 3px;" class="btn btn-primary" href="{{ route('child.show', $child_account)}}">details</a>
+                    </td>
+                    <td style="color:black;">{{$child_account->created_at}}</td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
-       
 
-        
+
+        @elseif($user->type==2||$user->type==1 )
+
+        <h3 class="text-center" style="color: black;">no childeren</h3>
+        @endif
     </div>
+    @if(session('success')!= null)
+    <div class="alert alert-success">
+        <h3><strong>{{session('success')}}</strong></h3>
+    </div>
+    <br>
     @endif
 </div>
-@else
 
-<h3 class="text-center" style="color: black;">no transactions</h3>
-@endif
+<script>
+    function getText(accountnumber) {
+        document.getElementById("receive_account").innerHTML = accountnumber;
+       
+       
+    }
+</script>
 
 
 
