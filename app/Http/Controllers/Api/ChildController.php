@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Child;
+use App\Models\related_accounts;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -75,6 +76,10 @@ class ChildController extends Controller
         'type'=>'3'
         ]
         ));
+        $mychild= new related_accounts();
+        $mychild->parent_id = auth()->user()->id;
+        $mychild->child_id = $child->id;
+        $mychild->save();
 
 
         if($child){

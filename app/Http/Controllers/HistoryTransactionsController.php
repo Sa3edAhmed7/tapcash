@@ -43,11 +43,11 @@ class HistoryTransactionsController extends Controller
 
                 $money = new history_transactions();
                 $money->account_no = Auth::user()->account_number;
-                $money->process_type = 'admin '.$request->process_name . ' with value ' . $request->process_type;
+                $money->process_type = 'admin ' . $request->process_name . ' with value ' . $request->process_type;
                 $money->receive_account = $request->receive_account;
                 $money->save();
 
-                
+
                 return redirect()->back()->with(session()->flash('success', ' sended Successfully'));
             } else {
                 return redirect()->back()->with(session()->flash('success', 'user not found'));
@@ -60,15 +60,11 @@ class HistoryTransactionsController extends Controller
             $sender_user = User::findorfail(Auth::user()->id);
             $reciever_user = User::where('account_number', $request->receive_account)->first();
             $child_account = child::where('account_number', $request->receive_account)->first();
-            // print($request->process_type);
-            // print($sender_user->deposite);
-            // $x=($request->process_type < $sender_user->deposite)? "true" : "false" ;
-            // print($x);
+
             if ($request->process_type < $sender_user->deposite) {
-                // print($request->receive_account);
-                // print("saeid");
+
                 if ($reciever_user) {
-                    // print("omar");
+                  
                     $inc_amount = $reciever_user->deposite + $request->process_type;
                     $dec_amount = $sender_user->deposite - $request->process_type;
                     $sender_user->update(['deposite' => $dec_amount]);
@@ -86,7 +82,7 @@ class HistoryTransactionsController extends Controller
                     redirect()->back()->with(session()->flash('success', 'Doesnot exist this account'));
                 }
             }
-            redirect()->back()->with(session()->flash('success', 'havenot enough money'));
+           return redirect()->back()->with(session()->flash('success', 'havenot enough money'));
         }
     }
 

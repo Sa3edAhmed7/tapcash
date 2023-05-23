@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('type')->default("2")->comment('1 for Admin and 2 for User or Customer');
             $table->string('gender');
             $table->string('age');
-            $table->float('deposite');
+            $table->float('deposite')->default("0.0");
             $table->rememberToken();
             $table->timestamps();
         });

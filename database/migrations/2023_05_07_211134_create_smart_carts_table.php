@@ -19,7 +19,7 @@ return new class extends Migration
             $table->float('deposite');
             $table->float('money_limit')->nullable();
             $table->string('purchases_limit')->nullable();
-            $table->timestamp('expire_date')->useCurrent();
+
             $table->timestamps();
             
         });

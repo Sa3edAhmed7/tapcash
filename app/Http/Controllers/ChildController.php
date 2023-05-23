@@ -102,6 +102,7 @@ class ChildController extends Controller
     public function show(child $child)
     {
         $child_transactions = history_transactions::where('account_no',$child->account_number)->get();
+        $child=User::where('account_number',$child->account_number)->first();
         return view('show_child',compact('child_transactions','child'));
     }
 

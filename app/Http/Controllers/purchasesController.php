@@ -45,18 +45,27 @@ class purchasesController extends Controller
 
                 if ($cart_data->deposite >= $request->amount_money) {
 
-                    $dec_amount = $cart_data->deposite - $request->amount_money;
+                    $inc_moneylimit = $cart_data->money_limit + $request->amount_money;
 
-                    // $child_account->update(['deposite' => $dec_amount]);
-                    // $buyer_user->update(['deposite' => $dec_amount]);
-                    $cart_data->update(['deposite' => $dec_amount]);
+                    if ($child_account->money_limit >= $inc_moneylimit) {
 
-                    $money->account_no = $child_account->account_number;
-                    $money->process_type = 'buy with value' . $request->amount_money;
-                    $money->receive_account = $request->purchase_name;
-                    $money->save();
+                        $dec_amount = $cart_data->deposite - $request->amount_money;
 
-                    return redirect()->back()->with(session()->flash('success', ' Buying succeeded'));
+                        // $child_account->update(['deposite' => $dec_amount]);
+                        // $buyer_user->update(['deposite' => $dec_amount]);
+
+                        $cart_data->update(['deposite' => $dec_amount, 'money_limit' => $inc_moneylimit]);
+
+                        $money->account_no = $child_account->account_number;
+                        $money->process_type = 'buy with value' . $request->amount_money;
+                        $money->receive_account = $request->purchase_name;
+                        $money->save();
+
+                        return redirect()->back()->with(session()->flash('success', ' Buying succeeded'));
+                    } else {
+                        return redirect()->back()->with(session()->flash('success', 'You have exceeded the limit for day'));
+                        
+                    }
                 } else {
                     return redirect()->back()->with(session()->flash('success', 'havenot enough money'));
                 }
@@ -74,7 +83,6 @@ class purchasesController extends Controller
                 $money->receive_account = $request->purchase_name;
                 $money->save();
                 return redirect()->back()->with(session()->flash('success', ' Buying succeeded'));
-
             }
             return redirect()->back()->with(session()->flash('success', 'havenot enough money'));
         }

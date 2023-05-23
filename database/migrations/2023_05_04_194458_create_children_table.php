@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('type')->default("3")->comment('1 for Admin and 2 for User or Customer and 3 for child');
             $table->string('gender');
             $table->string('age');
-            $table->float('deposite');
+            $table->float('deposite')->default("0.0");
             $table->float('money_limit');
             $table->string('purchases_limit');
             

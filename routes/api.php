@@ -3,11 +3,13 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\getallchildren;
 use App\Http\Controllers\Api\ChildController;
 use App\Http\Controllers\Api\PurchasesController;
 use App\Http\Controllers\Api\SmartCartController;
+use App\Http\Controllers\Api\getchildtransactions;
 use App\Http\Controllers\Api\TransactionController;
-
+use App\Http\Controllers\Api\getmytransactions;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,28 +25,46 @@ Route::middleware('auth:sanctum')->get('/api/dashboard', function (Request $requ
     return $request->user();
 });
 
-Route::group(['middleware' => 'api','prefix' => 'auth'],function () {
 
-    Route::post('/login', [AuthController::class,'login']);
-    Route::post('/register', [AuthController::class,'register']);
-    Route::post('/logout', [AuthController::class,'logout']);
-    Route::post('/refresh', [AuthController::class,'refresh']);
+
+
+
+
+
+
+Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
+
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/logout', [AuthController::class, 'logout']);
     
-
-    Route::post('/children',[ChildController::class,'store']);
-    Route::get('/children',[ChildController::class,'index']);
-    Route::get('/child/{id}',[ChildController::class,'show']);
- 
-    Route::post('/child/{id}',[ChildController::class,'destroy']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
 
 
-    Route::post('/transfer',[TransactionController::class,'store']);
-
-    Route::post('/create_smartcart',[SmartCartController::class,'store']);
-
-    Route::post('/purchases',[PurchasesController::class,'store']);
 
 });
 
+Route::group(['middleware' => 'auth:sanctum','prefix' => 'options'], function () {
+
+    Route::post('/children', [ChildController::class, 'store']);
+    Route::get('/children', [ChildController::class, 'index']);
+    Route::get('/child/{id}', [ChildController::class, 'show']);
+
+   
+
+    Route::post('/getallchildren', [getallchildren::class, 'index']);
+
+    Route::post('/getchildtransactions', [getchildtransactions::class, 'show']);
+
+    Route::post('/getmytransactions', [getmytransactions::class, 'index']);
+
+    Route::post('/child/{id}', [ChildController::class, 'destroy']);
 
 
+    Route::post('/transfer', [TransactionController::class, 'store']);
+
+    Route::post('/create_smartcart', [SmartCartController::class, 'store']);
+
+    Route::post('/purchases', [PurchasesController::class, 'store']);
+
+});

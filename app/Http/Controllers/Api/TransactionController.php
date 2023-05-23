@@ -34,6 +34,11 @@ class TransactionController extends Controller
                 $user = User::where('account_number', $reciever)->first();
                 if ($user) {
                     $user->update(['deposite' => $request->process_type]);
+                    $money = new history_transactions();
+                    $money->account_no = Auth::user()->account_number;
+                    $money->process_type = 'admin ' . $request->process_name . ' with value ' . $request->process_type;
+                    $money->receive_account = $request->receive_account;
+                    $money->save();
                     return response('sended Successfully', 201);
                 } else {
                     return response('user not found', 404);
