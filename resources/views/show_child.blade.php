@@ -54,7 +54,7 @@
     <div class="card-block">
         <div class="row align-items-end">
             <div class="col-8">
-                <h5 class="text-white text-center">name , {{$child->name}}</h5>
+                <h5 class="text-white text-center">child name : {{$child->name}}</h5>
             </div>
             <div class="col-4 text-right"><iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
                 <canvas id="update-chart-4" height="50" width="52" style="display: block; width: 52px; height: 50px;"></canvas>

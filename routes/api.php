@@ -37,7 +37,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    
+
     Route::post('/refresh', [AuthController::class, 'refresh']);
 
 
@@ -49,7 +49,7 @@ Route::group(['middleware' => 'auth:sanctum','prefix' => 'options'], function ()
     Route::post('/children', [ChildController::class, 'store']);
     Route::get('/children', [ChildController::class, 'index']);
     Route::get('/child/{id}', [ChildController::class, 'show']);
-
+    Route::post('/child/{id}', [ChildController::class, 'destroy']);
    
 
     Route::post('/getallchildren', [getallchildren::class, 'index']);
@@ -58,12 +58,15 @@ Route::group(['middleware' => 'auth:sanctum','prefix' => 'options'], function ()
 
     Route::post('/getmytransactions', [getmytransactions::class, 'index']);
 
-    Route::post('/child/{id}', [ChildController::class, 'destroy']);
+    
 
 
     Route::post('/transfer', [TransactionController::class, 'store']);
 
+    Route::post('/check_smartcart', [SmartCartController::class, 'index']);
     Route::post('/create_smartcart', [SmartCartController::class, 'store']);
+    Route::post('/inc_money_smartcart', [SmartCartController::class, 'inc_money']);
+    Route::post('/dec_money_smartcart', [SmartCartController::class, 'dec_money']);
 
     Route::post('/purchases', [PurchasesController::class, 'store']);
 

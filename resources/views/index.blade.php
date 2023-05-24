@@ -29,7 +29,7 @@
 
 
           <div class="col-lg-12">
-            <button type="submit" class="btn btn-primary w-100">Get Your Loan Now</button>
+            <button type="submit" class="btn btn-primary w-100">Transfer</button>
           </div>
 
         </form>
@@ -131,9 +131,8 @@
               04
 
             </span>
-            <h3 class="mb-3 service-title">Mortgage Loans</h3>
-            <p class="mb-0 service-description">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-              eirmod</p>
+            <h3 class="mb-3 service-title">Donations</h3>
+            <p class="mb-0 service-description">Coming Soon</p>
           </div>
         </a>
       </div>
@@ -145,9 +144,8 @@
               05
 
             </span>
-            <h3 class="mb-3 service-title">Payday Loans</h3>
-            <p class="mb-0 service-description">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-              eirmod</p>
+            <h3 class="mb-3 service-title">Your Points</h3>
+            <p class="mb-0 service-description">Coming Soon</p>
           </div>
         </a>
       </div>

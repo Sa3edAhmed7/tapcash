@@ -32,7 +32,10 @@ class SmartCartController extends Controller
             DB::table('smart_carts')->where('created_at', '<=', Carbon::now()->subDay(1))
             ->where('user_id',  '=', auth()->user()->id)->delete();
         }
-        return view('smartcart', compact('check_smartcart'));
+
+            return view('smartcart', compact('check_smartcart'));
+       
+        
     }
 
     /**
@@ -91,7 +94,7 @@ class SmartCartController extends Controller
 
         $getUser = User::where('id', Auth::user()->id)->first();
 
-        if ($request->inc_money < $getUser->deposite) {
+        if ($request->inc_money <= $getUser->deposite) {
 
             $smartcart_user = SmartCart::where('user_id', Auth::user()->id)->first();
 
