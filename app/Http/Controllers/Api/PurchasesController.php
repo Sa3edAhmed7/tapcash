@@ -47,7 +47,7 @@ class PurchasesController extends Controller
 
                 if (in_array($request->purchase_name, $purchase_limits)) {
 
-                    $cart_data = SmartCart::where('user_id', $child_account->id)->first();
+                    $cart_data = SmartCart::where('user_id', $buyer_user->id)->first();
 
                     if ($cart_data->deposite >= $request->amount_money) {
 
