@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\SmartCartController;
 use App\Http\Controllers\Api\getchildtransactions;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\getmytransactions;
+use App\Http\Controllers\Api\UserDataController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -38,7 +40,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::post('/refresh', [AuthController::class, 'refresh']);
+   
 
 
 
@@ -46,6 +48,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
 
 Route::group(['middleware' => 'auth:sanctum','prefix' => 'options'], function () {
 
+    Route::post('/userData', [UserDataController::class, 'index']);
     Route::post('/children', [ChildController::class, 'store']);
     Route::get('/children', [ChildController::class, 'index']);
     Route::get('/child/{id}', [ChildController::class, 'show']);
@@ -56,9 +59,7 @@ Route::group(['middleware' => 'auth:sanctum','prefix' => 'options'], function ()
 
     Route::post('/getchildtransactions', [getchildtransactions::class, 'show']);
 
-    Route::post('/getmytransactions', [getmytransactions::class, 'index']);
-
-    
+    Route::get('/getmytransactions', [getmytransactions::class, 'index']);
 
 
     Route::post('/transfer', [TransactionController::class, 'store']);

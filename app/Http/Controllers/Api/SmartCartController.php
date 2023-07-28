@@ -31,9 +31,9 @@ class SmartCartController extends Controller
                 ->where('user_id',  '=', Auth::user()->id)->delete();
         }
         if ($check_smartcart) {
-            return $this->apiResponse($check_smartcart, 'smartcart', 201);
+            return $this->apiResponse($check_smartcart, 'exist', 201);
         } else {
-            return response('havenot smartcart', 201);
+            return $this->apiResponse(['empty'],'havenot smartcart', 201);
         }
     }
 
@@ -73,9 +73,9 @@ class SmartCartController extends Controller
                     $smartcart->save();
                     $check_smartcart = $smartcart;
                     // $check_smartcart=SmartCart::where('user_id',$user->id);
-                    return response('cart created Successfully', 201);
+                    return  $this->apiResponse($smartcart,'cart created Successfully', 201);
                 } else {
-                    return response('havenot enough money', 201);
+                    return  $this->apiResponse(['empty'],'havenot enough money', 201);
                 }
             }
         }
@@ -97,10 +97,10 @@ class SmartCartController extends Controller
             $getUser->update(['deposite' => $dec_money]);
 
             $smartcart_user->update(['deposite' => $smartcart_dep]);
-            return response('increased successfully', 201);
+            return $this->apiResponse($smartcart_user,'increased successfully', 201);
             
         } else {
-            return response('havenot enough money', 201);
+            return $this->apiResponse(['empty'],'havenot enough money', 201);
             
         }
     }
@@ -122,10 +122,10 @@ class SmartCartController extends Controller
             $getUser->update(['deposite' => $user_dep]);
 
             $smartcart_user->update(['deposite' => $dec_dep]);
-            return response('decreased successfully', 201);
+            return $this->apiResponse($smartcart_user,'decreased successfully', 201);
             
         } else {
-            return response('havenot enough money into your cart', 201);
+            return $this->apiResponse(['empty'],'havenot enough money into your cart', 201);
         }
     }
 }

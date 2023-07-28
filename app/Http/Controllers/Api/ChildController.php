@@ -43,7 +43,6 @@ class ChildController extends Controller
             'city' =>'required|string|max:20',
             'gender' =>'required|string|max:7',
             'age' =>'required|numeric|digits:2',
-            'deposite' =>'required',
             
             
         ]);
@@ -56,12 +55,13 @@ class ChildController extends Controller
         
         if($validator->fails())
         {
-            return $this->apiResponse(null,$validator->errors(),404);
+            return $this->apiResponse($validator->errors(),'failed',201);
         }
 
         $child= Child::create(array_merge(
             $validator->validated(),
-        ['password' => Hash::make($request->password),'confirm_password' => Hash::make($request->confirm_password),
+        ['password' => Hash::make($request->password),
+        'confirm_password' => Hash::make($request->confirm_password),
         'account_number'=>$account_number,
         'purchases_limit'=>$request->purchases_limit,
         'money_limit'=>$request->money_limit,
@@ -71,7 +71,8 @@ class ChildController extends Controller
         
         $user = User::create(array_merge(
             $validator->validated(),
-        ['password' => Hash::make($request->password),'confirm_password' => Hash::make($request->confirm_password),
+        ['password' => Hash::make($request->password),
+        'confirm_password' => Hash::make($request->confirm_password),
         'account_number'=>$account_number,
         'type'=>'3'
         ]
@@ -83,9 +84,9 @@ class ChildController extends Controller
 
 
         if($child){
-            return $this->apiResponse(new ChildResource($child),'The Child Save Success',201);
+            return $this->apiResponse($child,'The Child Save Success',201);
         }
-        return $this->apiResponse(null,'The Child Not Save',404);
+        return $this->apiResponse(["empty"],'The Child Not Save',404);
 
 
     }

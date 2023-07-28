@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    use ApiResponseTrait;
     public function __construct()
     {
         $this->middleware('auth:api,web', ['except' => ['login', 'register','logout']]);
@@ -27,11 +28,16 @@ class AuthController extends Controller
 
         if($validator->fails())
         {
-            return response()->json($validator->errors(),422);
+            // return response()->json($validator->errors(),422);
+            return $this->apiResponse($validator->errors(),'Wrong email or password', 201);
+     
+
         }
 
         if(!$token = auth()->attempt($validator->validate())){
-            return response()->json(['error' => 'Unauthorized'], 401);
+            // return response()->json(['error' => 'Unauthorized'], 201);
+            return $this->apiResponse(['error' => 'Unauthorized'],'sended failed', 201);
+     
         }
         $token = $request->user()->createToken('token');
 
@@ -50,7 +56,7 @@ class AuthController extends Controller
             'city' =>'required|string|max:20',
             'gender' =>'required|string|max:7',
             'age' =>'required|numeric|digits:2',
-            'deposite' =>'required|numeric',
+            
             
         ]);
         $account_number="4";
@@ -61,13 +67,15 @@ class AuthController extends Controller
 
         if($validator->fails())
         {
-            return response()->json($validator->errors()->toJson(),400);
+            // return response()->json($validator->errors()->toJson(),400);
+            return $this->apiResponse($validator->errors(),'failed',201);
         }
         
 
         $user = User::create(array_merge(
             $validator->validated(),
-        ['password' => Hash::make($request->password),'confirm_password' => Hash::make($request->confirm_password),
+        ['password' => Hash::make($request->password),
+        'confirm_password' => Hash::make($request->confirm_password),
         'account_number'=>$account_number,
         ]
         ));
@@ -87,9 +95,7 @@ class AuthController extends Controller
             'message' => 'Successfully logged out',
         ]);
     }
-
-
-
+    
     public function userdata_with_token($token)
     {
         return response()->json([
@@ -97,5 +103,9 @@ class AuthController extends Controller
             'user' => auth()->user()
         ]);
     }
+
+
+
+    
 
 }

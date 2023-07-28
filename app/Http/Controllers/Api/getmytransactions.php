@@ -12,10 +12,9 @@ class getmytransactions extends Controller
     use ApiResponseTrait;
     public function index()
     {
-        $user= Auth::user();
-        $transactions = history_transactions::where('account_no',$user->account_number)->get();
+        $user = Auth::user();
+        $transactions = history_transactions::where('account_no', $user->account_number)->latest()->get();
 
-        return $this->apiResponse($transactions,'my transactions',201);
+        return $this->apiResponse($transactions, 'my transactions', 201);
     }
-
 }

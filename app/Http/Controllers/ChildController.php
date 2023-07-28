@@ -43,7 +43,9 @@ class ChildController extends Controller
         //     // 'password' => ['required', 'confirmed', Rules\Password::defaults()],
         // ]);
             
-       $purchases_limit= $request->food.','. $request->clothes.','.
+       $purchases_limit= 
+       $request->food.','.
+        $request->clothes.','.
         $request->electorincs.','.
         $request->drinks.','.
         $request->cigarettes;
